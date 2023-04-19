@@ -10,6 +10,16 @@ repositories {
 }
 
 dependencies {
+    implementation group: 'org.springframework', name: 'spring-core', version: '5.3.23'
+    implementation group: 'org.springframework', name: 'spring-context', version: '5.3.23'
+    implementation group: 'org.springframework', name: 'spring-web', version: '5.3.23' //v
+    implementation group: 'org.springframework', name: 'spring-webmvc', version: '5.3.23'
+
+    compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
+
+    implementation group: 'com.mchange', name: 'c3p0', version: '0.9.5.5'
+    runtimeOnly 'org.postgresql:postgresql:42.6.0'
+
     implementation 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
