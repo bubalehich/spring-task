@@ -1,10 +1,9 @@
-package ru.clevertec.dao.impl;
+package ru.clevertec.dao.tag;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
-import ru.clevertec.dao.TagDAO;
 import ru.clevertec.entity.Tag;
 
 import java.util.HashMap;
@@ -48,6 +47,11 @@ public class TagDAOImpl implements TagDAO {
 
     @Override
     public List<Tag> findBy(String criteria, String value) {
+        return null;
+    }
+
+    @Override
+    public List<Tag> findBy(Map<String, String> params) {
         return null;
     }
 

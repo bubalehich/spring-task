@@ -1,11 +1,12 @@
-package ru.clevertec.dao;
+package ru.clevertec.dao.certificate;
 
+import ru.clevertec.dao.DAOInterface;
 import ru.clevertec.entity.GiftCertificate;
 
 import java.util.List;
 import java.util.Map;
 
-public interface CertificateDAO {
+public interface CertificateDAO extends DAOInterface<GiftCertificate> {
 
     void create(GiftCertificate certificate);
 

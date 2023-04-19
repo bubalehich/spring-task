@@ -1,10 +1,9 @@
-package ru.clevertec.dao.impl;
+package ru.clevertec.dao.certificate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
-import ru.clevertec.dao.CertificateDAO;
 import ru.clevertec.entity.GiftCertificate;
 
 import java.sql.Timestamp;
