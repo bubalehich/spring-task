@@ -1,12 +1,12 @@
-package ru.clevertec.dao;
+package ru.clevertec.dao.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
+import ru.clevertec.dao.CertificateDAO;
 import ru.clevertec.entity.GiftCertificate;
 
-import java.net.IDN;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +24,9 @@ public class CertificateDAOImpl implements CertificateDAO {
     private static final String FIELD_CREATE_DATE = "create_date";
     private static final String FIELD_LAST_UPDATE_DATE = "last_update_date";
     private static final String FIELD_DURATION = "duration";
+
     private final JdbcTemplate jdbcTemplate;
+
     private final SimpleJdbcInsert insertCertificate;
 
     @Autowired

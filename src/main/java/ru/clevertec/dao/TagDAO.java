@@ -5,6 +5,7 @@ import ru.clevertec.entity.Tag;
 import java.util.List;
 
 public interface TagDAO {
+
     void create(Tag tag);
 
     List<Tag> findAll();
