@@ -11,12 +11,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static ru.clevertec.util.Fields.ID;
+import static ru.clevertec.util.Fields.NAME;
+
 @Component
 public class TagDAOImpl implements TagDAO {
 
+    private static final String FIND_ALL_QUERY = "select * from tag";
+    private static final String DELETE_QUERY = "delete from tag where id = ?";
+
     private static final String TABLE_NAME = "tag";
-    private static final String FIELD_NAME = "name";
-    private static final String FIELD_ID = "id";
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert insertTag;
 
@@ -30,17 +34,17 @@ public class TagDAOImpl implements TagDAO {
     @Override
     public void create(Tag tag) {
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put(FIELD_NAME, tag.getName());
+        parameters.put(NAME, tag.getName());
 
         insertTag.execute(parameters);
     }
 
     @Override
     public List<Tag> findAll() {
-        return jdbcTemplate.query("select * from tag", (resultSet, i) -> {
+        return jdbcTemplate.query(FIND_ALL_QUERY, (resultSet, i) -> {
             Tag tag = new Tag();
-            tag.setId(resultSet.getInt(FIELD_ID));
-            tag.setName(resultSet.getString(FIELD_NAME));
+            tag.setId(resultSet.getInt(ID));
+            tag.setName(resultSet.getString(NAME));
             return tag;
         });
     }
@@ -57,6 +61,6 @@ public class TagDAOImpl implements TagDAO {
 
     @Override
     public void delete(Tag tag) {
-        jdbcTemplate.update("delete from tag where id = ?", tag.getId());
+        jdbcTemplate.update(DELETE_QUERY, tag.getId());
     }
 }
