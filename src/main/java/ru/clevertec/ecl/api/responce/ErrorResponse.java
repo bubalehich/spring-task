@@ -1,7 +1,9 @@
-package ru.clevertec.ecl.controller.responce;
+package ru.clevertec.ecl.api.responce;
 
 public class ErrorResponse {
+
     private int code;
+
     private String message;
 
     public ErrorResponse() {

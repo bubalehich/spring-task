@@ -1,16 +1,16 @@
-package ru.clevertec.ecl.controller.responce;
+package ru.clevertec.ecl.api.responce;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
 import ru.clevertec.ecl.exception.ItemNotFoundException;
 import ru.clevertec.ecl.exception.RequestParamsNotValidException;
 import ru.clevertec.ecl.exception.ServiceException;
 
 @ControllerAdvice
 public class CommonExceptionHandler {
+
     private static final int ITEM_NOT_FOUND = 100404;
     private static final int REQUEST_PARAMS_NOT_VALID = 100400;
     private static final int SERVER_ERR = 100500;
