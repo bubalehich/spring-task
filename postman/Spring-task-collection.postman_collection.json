@@ -95,6 +95,31 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "FIND",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/tags?name=tagname",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"tags"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "tagname"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -195,7 +220,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"string\",\r\n    \"description\": \"string\",\r\n    \"price\": 4.0,\r\n    \"duration\": 4,\r\n    \"tags\":[\r\n        \r\n    ]\r\n}\r\n",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"string\",\r\n    \"description\": \"string\",\r\n    \"price\": 4.0,\r\n    \"duration\": 4,\r\n    \"tags\":[\r\n        \r\n    ]\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -212,6 +237,52 @@
 								"api",
 								"certificates",
 								"{id}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FIND",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/certificates?name=certificateName&sort=certificateName&description=description&order=asc&tag_name=tagname",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"certificates"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "certificateName"
+								},
+								{
+									"key": "sort",
+									"value": "certificateName"
+								},
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "description",
+									"value": "description"
+								},
+								{
+									"key": "order",
+									"value": "asc"
+								},
+								{
+									"key": "tag_name",
+									"value": "tagname"
+								}
 							]
 						}
 					},
