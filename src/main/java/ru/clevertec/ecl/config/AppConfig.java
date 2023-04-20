@@ -1,7 +1,6 @@
 package ru.clevertec.ecl.config;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -24,7 +23,6 @@ import java.beans.PropertyVetoException;
         @PropertySource("classpath:dev-dev-db.properties"),
         @PropertySource("classpath:prod-dev-db.properties"),
 })
-@Slf4j
 public class AppConfig implements WebApplicationInitializer {
 
     private Environment env;

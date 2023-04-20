@@ -3,10 +3,7 @@ package ru.clevertec.ecl.entity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -14,8 +11,10 @@ import java.util.Set;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class GiftCertificate {
 
     private int id;
@@ -36,7 +35,8 @@ public class GiftCertificate {
     @Positive(message = "Duration should be positive")
     private int duration;
 
-    private Set<@NotNull Tag> tags = new HashSet<>();
+    @Builder.Default
+    private Set<Tag> tags = new HashSet<>();
 
     public void addTag(Tag tag) {
         this.tags.add(tag);

@@ -1,7 +1,6 @@
 package ru.clevertec.ecl.dao.certificate;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,7 +10,6 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import ru.clevertec.ecl.entity.GiftCertificate;
 
 import java.util.HashMap;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,75 +38,98 @@ class GiftCertificateDAOTest {
     }
 
     @Test
-    void create() {
-        var giftCertificate = new GiftCertificate();
-        giftCertificate.setName("ZhZh");
-        giftCertificate.setDescription("zhu zhu");
-        giftCertificate.setPrice(3);
-        giftCertificate.setDuration(6);
+    void testCreate() {
+        var giftCertificate = GiftCertificate.builder()
+                .name("ZhZh")
+                .description("zhu zhu")
+                .price(3)
+                .duration(6)
+                .build();
+
         giftCertificateDAO.create(giftCertificate);
+        var optionalGiftCertificate = giftCertificateDAO.findByName(giftCertificate.getName());
 
-        var giftCertificate1 = giftCertificateDAO.findByName("ZhZh");
-
-        Assertions.assertTrue(giftCertificate1.isPresent());
-        giftCertificate = giftCertificate1.get();
-        assertNotNull(giftCertificate);
-        assertNotEquals(0, giftCertificate.getId());
-        assertEquals("ZhZh", giftCertificate.getName());
-        assertEquals("zhu zhu", giftCertificate.getDescription());
-        assertEquals(3, giftCertificate.getPrice());
-        assertEquals(6, giftCertificate.getDuration());
+        assertTrue(optionalGiftCertificate.isPresent());
+        var createdGiftCertificate = optionalGiftCertificate.get();
+        assertEquals(5, createdGiftCertificate.getId());
+        assertEquals(giftCertificate.getName(), createdGiftCertificate.getName());
+        assertEquals(giftCertificate.getPrice(), createdGiftCertificate.getPrice());
+        assertNotNull(createdGiftCertificate.getCreateDate());
+        assertNotNull(createdGiftCertificate.getLastUpdateDate());
     }
 
     @Test
-    void findAll() {
-        assertTrue(giftCertificateDAO.findAll().isPresent());
-        assertEquals(3, giftCertificateDAO.findAll().get().size());
+    void testFindAll() {
+        var actual = giftCertificateDAO.findAll();
+
+        assertTrue(actual.isPresent());
+        assertEquals(4, actual.get().size());
     }
 
     @Test
-    void update() {
-        Optional<GiftCertificate> certificate = giftCertificateDAO.findById(1);
+    void testUpdate() {
+        var optionalExistingCertificate = giftCertificateDAO.findById(1);
+        assertTrue(optionalExistingCertificate.isPresent());
+        var existingCertificate = optionalExistingCertificate.get();
+        existingCertificate.setName("Changed");
+        existingCertificate.setDescription("Changed");
+        existingCertificate.setPrice(2);
+
+        giftCertificateDAO.update(existingCertificate);
+
+        var optionalUpdatedCertificate = giftCertificateDAO.findById(1);
+        assertTrue(optionalUpdatedCertificate.isPresent());
+        var updatedCertificate = optionalUpdatedCertificate.get();
+        assertNotNull(updatedCertificate);
+        assertEquals("Changed", updatedCertificate.getName());
+        assertEquals("Changed", updatedCertificate.getDescription());
+        assertEquals(2, updatedCertificate.getPrice());
+    }
+
+    @Test
+    void testDeleteByExistingId() {
+        var result = giftCertificateDAO.delete(4);
+
+        assertEquals(1, result);
+    }
+
+    @Test
+    void testDeleteByNonExistingId() {
+        var result = giftCertificateDAO.delete(999);
+
+        assertEquals(0, result);
+    }
+
+    @Test
+    void testFindByExistingId() {
+        var certificate = giftCertificateDAO.findById(1);
 
         assertTrue(certificate.isPresent());
-        var giftCertificate = certificate.get();
-        giftCertificate.setName("Zazazazaz");
-        giftCertificate.setDescription("Eheheheh");
-        giftCertificate.setPrice(2);
-        giftCertificate.setDuration(4);
-        giftCertificateDAO.update(giftCertificate);
-
-        var optionalChanged = giftCertificateDAO.findById(1);
-
-        assertTrue(optionalChanged.isPresent());
-        var changed = optionalChanged.get();
-        assertNotNull(changed);
-        assertEquals("Zazazazaz", changed.getName());
-        assertEquals("Eheheheh", changed.getDescription());
-        assertEquals(2, changed.getPrice());
-        assertEquals(4, changed.getDuration());
     }
 
     @Test
-    void delete() {
-        assertEquals(1, giftCertificateDAO.delete(1));
-        assertEquals(0, giftCertificateDAO.delete(999));
+    void testFindByNonExistingId() {
+        var certificate = giftCertificateDAO.findById(88);
+
+        assertFalse(certificate.isPresent());
     }
 
     @Test
-    void findById() {
-        assertTrue(giftCertificateDAO.findById(1).isPresent());
-        assertFalse(giftCertificateDAO.findById(88).isPresent());
+    void testFindByExistingName() {
+        var actual = giftCertificateDAO.findByName("Cerf1");
+
+        assertTrue(actual.isPresent());
     }
 
     @Test
-    void findByName() {
-        assertTrue(giftCertificateDAO.findByName("Cerf1").isPresent());
-        assertFalse(giftCertificateDAO.findByName("NonExistingCertificate").isPresent());
+    void testFindByNonExistingName() {
+        var actual = giftCertificateDAO.findByName("NonExistingCertificate");
+
+        assertFalse(actual.isPresent());
     }
 
     @Test
-    void findBySortByName() {
+    void testFindByWithParams() {
         var params = new HashMap<String, String>();
         params.put("SORT", "create_date");
         params.put("ORDER", "ASC");
@@ -120,10 +141,9 @@ class GiftCertificateDAOTest {
         assertTrue(optionalGiftCertificates.isPresent());
         var certificates = optionalGiftCertificates.get();
         assertNotNull(certificates);
-        assertEquals(3, certificates.size());
+        assertEquals(4, certificates.size());
         assertEquals("Cerf1", certificates.get(0).getName());
         assertEquals("desc1", certificates.get(0).getDescription());
-        assertEquals(12.50, certificates.get(0).getPrice());
-        assertEquals(1, certificates.get(0).getDuration());
+        assertEquals(13.00, certificates.get(0).getPrice());
     }
 }

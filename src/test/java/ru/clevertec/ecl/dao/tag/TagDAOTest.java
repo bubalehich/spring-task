@@ -34,7 +34,7 @@ class TagDAOTest {
     }
 
     @Test
-    void create() {
+    void testCreate() {
         var tagName = "SixthTag";
         var tag = new Tag();
         tag.setName(tagName);
@@ -50,27 +50,37 @@ class TagDAOTest {
     }
 
     @Test
-    void findAll() {
-        assertTrue(tagDAO.findAll().isPresent());
-        assertEquals(5, tagDAO.findAll().get().size());
+    void testFindAll() {
+        var actual = tagDAO.findAll();
+
+        assertTrue(actual.isPresent());
+        assertEquals(5, actual.get().size());
     }
 
-    @Test
-    void findBy() {
-        assertThrows(UnsupportedOperationException.class, () ->
+    @Test()
+    void testFindByShouldThrowException() {
+        assertThrowsExactly(UnsupportedOperationException.class, () ->
                 tagDAO.findBy(new HashMap<>()));
     }
 
     @Test()
-    void update() {
-        assertThrows(UnsupportedOperationException.class, () ->
+    void testUpdateShouldThrowException() {
+        assertThrowsExactly(UnsupportedOperationException.class, () ->
                 tagDAO.update(new Tag(1, "Oleg")));
     }
 
     @Test
-    void delete() {
-        assertEquals(1, tagDAO.delete(4));
-        assertEquals(0, tagDAO.delete(999));
+    void testDeleteByExistingId() {
+        var result = tagDAO.delete(4);
+
+        assertEquals(1, result);
+    }
+
+    @Test
+    void testDeleteByNonExistingId() {
+        var result = tagDAO.delete(999);
+
+        assertEquals(0, result);
     }
 
     @Test
@@ -83,14 +93,30 @@ class TagDAOTest {
     }
 
     @Test
-    void findById() {
-        assertTrue(tagDAO.findById(1).isPresent());
-        assertFalse(tagDAO.findById(88).isPresent());
+    void testFindByExistingId() {
+        var certificate = tagDAO.findById(1);
+
+        assertTrue(certificate.isPresent());
     }
 
     @Test
-    void findByName() {
-        assertTrue(tagDAO.findByName("FirstTag").isPresent());
-        assertFalse(tagDAO.findByName("NonExistingTag").isPresent());
+    void testFindByNonExistingId() {
+        var certificate = tagDAO.findById(88);
+
+        assertFalse(certificate.isPresent());
+    }
+
+    @Test
+    void testFindByExistingName() {
+        var actual = tagDAO.findByName("FirstTag");
+
+        assertTrue(actual.isPresent());
+    }
+
+    @Test
+    void testFindByNonExistingName() {
+        var actual = tagDAO.findByName("NonExistingTag");
+
+        assertFalse(actual.isPresent());
     }
 }

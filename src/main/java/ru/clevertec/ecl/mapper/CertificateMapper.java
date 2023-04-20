@@ -19,9 +19,11 @@ public class CertificateMapper implements RowMapper<GiftCertificate> {
         certificate.setPrice(resultSet.getDouble(Fields.PRICE));
         certificate.setLastUpdateDate(new Timestamp(resultSet.getTimestamp(Fields.LAST_UPDATE_DATE)
                 .getTime())
-                .toLocalDateTime());
+                .toLocalDateTime()
+                .toString());
         certificate.setCreateDate(new Timestamp(resultSet.getTimestamp(Fields.CREATE_DATE).getTime())
-                .toLocalDateTime());
+                .toLocalDateTime()
+                .toString());
         certificate.setId(resultSet.getInt(Fields.ID));
 
         return certificate;
