@@ -14,8 +14,11 @@ import ru.clevertec.ecl.exception.ServiceException;
 
 import java.util.*;
 
+import static ru.clevertec.ecl.util.Fields.NAME;
+
 @Service
 public class TagService implements ServiceInterface<Tag> {
+
     private final DAOInterface<Tag> tagDao;
 
     private final GiftCertificateToTagDAO giftCertificateToTagDAO;
@@ -55,16 +58,20 @@ public class TagService implements ServiceInterface<Tag> {
 
     @Override
     @Transactional
-    public void delete(int id) {
+    public boolean delete(int id) {
         try {
-            Tag tag = tagDao.findById(id).orElseThrow(()
+            var tag = tagDao.findById(id).orElseThrow(()
                     -> new ItemNotFoundException(String.format("Tag with id %d not found.", id))
             );
-            giftCertificateToTagDAO.deleteByTagId(tag.getId());
-            tagDao.delete(tag.getId());
+            if (giftCertificateToTagDAO.deleteByTagId(tag.getId()) == 0
+                    && tagDao.delete(tag.getId()) == 0) {
+                return false;
+            }
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
+
+        return true;
     }
 
     @Override
@@ -93,10 +100,10 @@ public class TagService implements ServiceInterface<Tag> {
     @Override
     public List<Tag> getBy(Map<String, String> params) {
         try {
-            String name = Optional.of(params.get("name")).orElseThrow(()
+            String name = Optional.ofNullable(params.get(NAME)).orElseThrow(()
                     -> new RequestParamsNotValidException("Invalid tag name."));
 
-            Tag tag = tagDao.findByName(params.get("name")).orElseThrow(()
+            Tag tag = tagDao.findByName(params.get(NAME)).orElseThrow(()
                     -> new ItemNotFoundException(String.format("Tag with name %s not found.", name))
             );
 

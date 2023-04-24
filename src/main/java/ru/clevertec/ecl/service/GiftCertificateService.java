@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-import ru.clevertec.ecl.validation.ValidationUtil;
 import ru.clevertec.ecl.dao.DAOInterface;
 import ru.clevertec.ecl.dao.GiftCertificateToTagDAO;
 import ru.clevertec.ecl.dao.tag.TagDAO;
@@ -13,6 +12,7 @@ import ru.clevertec.ecl.entity.Tag;
 import ru.clevertec.ecl.exception.DAOException;
 import ru.clevertec.ecl.exception.ItemNotFoundException;
 import ru.clevertec.ecl.exception.ServiceException;
+import ru.clevertec.ecl.validation.ValidationUtil;
 
 import java.util.*;
 
@@ -114,18 +114,21 @@ public class GiftCertificateService implements ServiceInterface<GiftCertificate>
 
     @Override
     @Transactional
-    public void delete(int id) {
+    public boolean delete(int id) {
         try {
             GiftCertificate giftCertificate = giftCertificateDAO.findById(id).orElseThrow(()
                     -> new ItemNotFoundException(
                     String.format("Not deleted! GiftCertificate with id %d not found!", id)));
 
-            giftCertificateToTagDAO.deleteByGiftCertificateId(giftCertificate.getId());
-
-            giftCertificateDAO.delete(id);
+            if (giftCertificateToTagDAO.deleteByGiftCertificateId(giftCertificate.getId()) == 0
+                    && giftCertificateDAO.delete(id) == 0) {
+                return false;
+            }
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
+
+        return true;
     }
 
     @Override

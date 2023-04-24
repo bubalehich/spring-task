@@ -12,7 +12,7 @@ public interface ServiceInterface<T> {
 
     T update(T t);
 
-    void delete(int id);
+    boolean delete(int id);
 
     T create(T t);
 
