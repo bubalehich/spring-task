@@ -1,5 +1,6 @@
 package ru.clevertec.ecl.dao.certificate;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
@@ -35,7 +36,7 @@ public class GiftCertificateDAO extends AbstractDAO<GiftCertificate> implements 
 
     @Autowired
     public GiftCertificateDAO(JdbcTemplate jdbcTemplate) {
-        super(jdbcTemplate, new CertificateMapper());
+        super(new CertificateMapper(), jdbcTemplate);
     }
 
     @Override

@@ -1,17 +1,16 @@
 package ru.clevertec.ecl.dao.tag;
 
-import ru.clevertec.ecl.dao.AbstractDAO;
-import ru.clevertec.ecl.dao.DAOInterface;
-import ru.clevertec.ecl.entity.Tag;
-import ru.clevertec.ecl.mapper.TagMapper;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import ru.clevertec.ecl.dao.AbstractDAO;
+import ru.clevertec.ecl.dao.DAOInterface;
+import ru.clevertec.ecl.entity.Tag;
 import ru.clevertec.ecl.exception.DAOException;
+import ru.clevertec.ecl.mapper.TagMapper;
 
 import java.util.List;
 import java.util.Map;
@@ -30,7 +29,7 @@ public class TagDAO extends AbstractDAO<Tag> implements DAOInterface<Tag> {
 
     @Autowired
     public TagDAO(JdbcTemplate jdbcTemplate) {
-        super(jdbcTemplate, new TagMapper());
+        super(new TagMapper(), jdbcTemplate);
     }
 
     @Override

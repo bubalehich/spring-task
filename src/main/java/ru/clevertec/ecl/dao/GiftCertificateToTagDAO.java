@@ -16,10 +16,10 @@ public class GiftCertificateToTagDAO extends AbstractDAO {
 
 
     public GiftCertificateToTagDAO(JdbcTemplate jdbcTemplate) {
-        super(jdbcTemplate, null);
+        super(null, jdbcTemplate);
     }
 
-    public int mapGiftCertificateToTag(int giftCertificateId, int tagId) {
+    public int saveGiftCertificateToTag(int giftCertificateId, int tagId) {
         try {
             return jdbcTemplate.update(CREATE_QUERY, giftCertificateId, tagId);
         } catch (DataAccessException e) {

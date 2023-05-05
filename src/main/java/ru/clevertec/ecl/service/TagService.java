@@ -1,11 +1,11 @@
 package ru.clevertec.ecl.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-import ru.clevertec.ecl.dao.DAOInterface;
 import ru.clevertec.ecl.dao.GiftCertificateToTagDAO;
+import ru.clevertec.ecl.dao.tag.TagDAO;
 import ru.clevertec.ecl.entity.Tag;
 import ru.clevertec.ecl.exception.DAOException;
 import ru.clevertec.ecl.exception.ItemNotFoundException;
@@ -17,17 +17,12 @@ import java.util.*;
 import static ru.clevertec.ecl.util.Fields.NAME;
 
 @Service
+@AllArgsConstructor
 public class TagService implements ServiceInterface<Tag> {
 
-    private final DAOInterface<Tag> tagDao;
+    private final TagDAO tagDao;
 
     private final GiftCertificateToTagDAO giftCertificateToTagDAO;
-
-    @Autowired
-    public TagService(DAOInterface<Tag> tagDao, GiftCertificateToTagDAO giftCertificateToTagDAO) {
-        this.tagDao = tagDao;
-        this.giftCertificateToTagDAO = giftCertificateToTagDAO;
-    }
 
     @Override
     @Transactional
@@ -111,5 +106,14 @@ public class TagService implements ServiceInterface<Tag> {
         } catch (DAOException e) {
             throw new ServiceException(e);
         }
+    }
+
+    public List<Tag> getByCertificateId(int id) {
+        return tagDao.findByCertificateId(id)
+                .orElse(new ArrayList<>());
+    }
+
+    public Tag getByName(String name) {
+        return tagDao.findByName(name).orElse(null);
     }
 }

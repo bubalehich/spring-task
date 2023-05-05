@@ -1,7 +1,6 @@
 package ru.clevertec.ecl.entity;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 
@@ -49,8 +48,7 @@ public class GiftCertificate {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof GiftCertificate)) return false;
-        GiftCertificate that = (GiftCertificate) o;
+        if (!(o instanceof GiftCertificate that)) return false;
         return id == that.id &&
                 Double.compare(that.price, price) == 0 &&
                 duration == that.duration &&

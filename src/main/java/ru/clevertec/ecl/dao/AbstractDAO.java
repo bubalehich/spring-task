@@ -1,17 +1,14 @@
 package ru.clevertec.ecl.dao;
 
+import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
+@AllArgsConstructor
 public abstract class AbstractDAO<T> {
 
     protected RowMapper<T> mapper;
     protected JdbcTemplate jdbcTemplate;
-
-    protected AbstractDAO(JdbcTemplate jdbcTemplate, RowMapper<T> mapper) {
-        this.mapper = mapper;
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     public RowMapper<T> getMapper() {
         return mapper;
