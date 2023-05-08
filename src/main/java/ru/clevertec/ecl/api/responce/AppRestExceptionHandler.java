@@ -9,7 +9,7 @@ import ru.clevertec.ecl.exception.RequestParamsNotValidException;
 import ru.clevertec.ecl.exception.ServiceException;
 
 @ControllerAdvice
-public class CommonExceptionHandler {
+public class AppRestExceptionHandler {
 
     private static final int ITEM_NOT_FOUND = 100404;
     private static final int REQUEST_PARAMS_NOT_VALID = 100400;
@@ -17,37 +17,29 @@ public class CommonExceptionHandler {
     private static final int COMMON_ERR = 666;
 
     @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handleTagNotFoundException(ItemNotFoundException e) {
-        ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setMessage(e.getMessage());
-        errorResponse.setCode(ITEM_NOT_FOUND);
+    public ResponseEntity<ErrorResponse> handleItemNotFoundException(ItemNotFoundException e) {
+        ErrorResponse errorResponse = new ErrorResponse(ITEM_NOT_FOUND, e.getMessage());
 
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handleTagNotFoundException(RequestParamsNotValidException e) {
-        ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setMessage(e.getMessage());
-        errorResponse.setCode(REQUEST_PARAMS_NOT_VALID);
+    public ResponseEntity<ErrorResponse> handleRequestParamsNotValidException(RequestParamsNotValidException e) {
+        ErrorResponse errorResponse = new ErrorResponse(REQUEST_PARAMS_NOT_VALID, e.getMessage());
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handleTagNotFoundException(ServiceException e) {
-        ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setMessage(e.getMessage());
-        errorResponse.setCode(SERVER_ERR);
+    public ResponseEntity<ErrorResponse> handleServiceException(ServiceException e) {
+        ErrorResponse errorResponse = new ErrorResponse(SERVER_ERR, e.getMessage());
 
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handleAdd(Exception e) {
-        ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setMessage(e.getMessage());
-        errorResponse.setCode(COMMON_ERR);
+    public ResponseEntity<ErrorResponse> handleException(Exception e) {
+        ErrorResponse errorResponse = new ErrorResponse(COMMON_ERR, e.getMessage());
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }

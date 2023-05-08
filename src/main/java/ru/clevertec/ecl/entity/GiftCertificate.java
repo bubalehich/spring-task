@@ -18,6 +18,7 @@ import java.util.Set;
 @Entity
 @Table(name = "gift_certificates")
 public class GiftCertificate extends NamedEntity {
+
     private String description;
 
     private double price;

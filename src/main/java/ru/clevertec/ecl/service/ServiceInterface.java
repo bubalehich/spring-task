@@ -1,21 +1,22 @@
 package ru.clevertec.ecl.service;
 
+import ru.clevertec.ecl.entity.base.BaseEntity;
 import ru.clevertec.ecl.pagination.Pagination;
-import ru.clevertec.ecl.util.Pair;
+import ru.clevertec.ecl.util.Criteria;
 
-import java.io.Serializable;
-import java.util.Map;
+import java.util.List;
 
-public interface ServiceInterface<T extends Serializable> {
+public interface ServiceInterface<T extends BaseEntity> {
+
     T getById(int id);
 
     Pagination<T> getAll(int page, int size, String sort, String sortMode);
 
-    Pagination<T> getBy(Map<String, Pair<String, String>> filterParams, Pair<String, String> sortParams, int page, int size);
+    Pagination<T> getBy(List<Criteria> criteria, int page, int size, String sort, String sortMode);
 
     T create(T t);
 
     T update(T t);
 
-    void delete(int id);
+    boolean delete(int id);
 }

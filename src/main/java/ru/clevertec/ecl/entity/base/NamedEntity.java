@@ -11,6 +11,7 @@ import java.util.Objects;
 @Getter
 @Setter
 public abstract class NamedEntity extends BaseEntity {
+
     private String name;
 
     protected NamedEntity(Integer id, String name) {

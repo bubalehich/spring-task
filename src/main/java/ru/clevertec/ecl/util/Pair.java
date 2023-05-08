@@ -1,19 +1,4 @@
 package ru.clevertec.ecl.util;
 
-public class Pair<T,U> {
-    private final T key;
-    private final U value;
-
-    public Pair(T key, U value) {
-        this.key = key;
-        this.value = value;
-    }
-
-    public T getKey() {
-        return this.key;
-    }
-
-    public U getValue() {
-        return this.value;
-    }
+public record Pair<T, U>(T key, U value) {
 }

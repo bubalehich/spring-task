@@ -1,5 +1,6 @@
 package ru.clevertec.ecl.entity.base;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,9 +16,15 @@ import java.util.Objects;
 @Setter
 @MappedSuperclass
 public abstract class BaseEntity implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @JsonIgnore
+    public boolean isNew() {
+        return id == null || id == 0;
+    }
 
     @Override
     public boolean equals(Object o) {

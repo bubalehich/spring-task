@@ -1,15 +1,16 @@
 package ru.clevertec.ecl.validation;
 
 import jakarta.validation.*;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ValidationUtil {
-    private ValidationUtil() {
-    }
 
     private static final Validator validator;
 

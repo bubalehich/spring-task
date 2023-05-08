@@ -17,6 +17,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "orders")
 public class Order extends BaseEntity {
+
     @JsonBackReference
     @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "user_id")

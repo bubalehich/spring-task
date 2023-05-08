@@ -10,6 +10,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Getter
 public class Pagination<T> {
+
     private List<T> content = new ArrayList<>();
     private int size;
     private int currentPage;
@@ -18,20 +19,7 @@ public class Pagination<T> {
     public Pagination(int size, int currentPage, long overallRows) {
         this.size = size;
         this.currentPage = currentPage;
-        this.overallPages = overallRows / size;
-        if (overallRows % size != 0) {
-            this.overallPages++;
-        }
-    }
-
-    public Pagination(List<T> content, int size, int currentPage, long overallRows) {
-        this.size = size;
-        this.content = content;
-        this.currentPage = currentPage;
-        this.overallPages = overallRows / size;
-        if (overallRows % size != 0){
-            this.overallPages++;
-        }
+        this.overallPages = overallRows % size == 0 ? overallRows / size : (overallRows / size + 1);
     }
 
     public void setContent(List<T> content) {
@@ -43,10 +31,7 @@ public class Pagination<T> {
     }
 
     public void setOverallPages(long overallRows) {
-        this.overallPages = overallRows / size;
-        if (overallRows % size != 0){
-            this.overallPages++;
-        }
+        this.overallPages = overallRows % size == 0 ? overallRows / size : (overallRows / size + 1);
     }
 
     public void setSize(int size) {
@@ -56,7 +41,8 @@ public class Pagination<T> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Pagination<?> that)) return false;
+        if (!(o instanceof Pagination)) return false;
+        Pagination<T> that = (Pagination<T>) o;
 
         return getSize() == that.getSize() &&
                 getCurrentPage() == that.getCurrentPage() &&
