@@ -3,7 +3,6 @@ package ru.clevertec.ecl.api.controller;
 import lombok.AllArgsConstructor;
 import ru.clevertec.ecl.api.TagApi;
 import ru.clevertec.ecl.entity.Tag;
-import ru.clevertec.ecl.service.ServiceInterface;
 import ru.clevertec.ecl.util.Fields;
 import ru.clevertec.ecl.validation.ValidationUtil;
 
