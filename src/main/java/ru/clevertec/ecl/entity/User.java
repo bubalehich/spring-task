@@ -21,9 +21,8 @@ import java.util.Set;
 @Table(name = "users")
 public class User extends Person {
 
-    public User(String firstName, String lastName, Set<Order> orders) {
+    public User(String firstName, String lastName) {
         super(firstName, lastName);
-        this.orders = orders;
     }
 
     public User(Integer id, String firstName, String lastName, Set<Order> orders) {

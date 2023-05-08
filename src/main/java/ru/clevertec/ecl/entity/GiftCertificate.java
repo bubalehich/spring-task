@@ -36,26 +36,11 @@ public class GiftCertificate extends NamedEntity {
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags = new HashSet<>();
 
-    public GiftCertificate(String name, String description, double price, String createDate, String lastUpdateDate,
-                           int duration, Set<Tag> tags) {
+    public GiftCertificate(String name, String description, double price, int duration) {
         super(name);
         this.description = description;
         this.price = price;
-        this.createDate = createDate;
-        this.lastUpdateDate = lastUpdateDate;
         this.duration = duration;
-        this.tags = tags == null ? new HashSet<>() : tags;
-    }
-
-    public GiftCertificate(Integer id, String name, String description, double price, String createDate,
-                           String lastUpdateDate, int duration, Set<Tag> tags) {
-        super(id, name);
-        this.description = description;
-        this.price = price;
-        this.createDate = createDate;
-        this.lastUpdateDate = lastUpdateDate;
-        this.duration = duration;
-        this.tags = tags == null ? new HashSet<>() : tags;
     }
 
     public void addTag(Tag tag) {

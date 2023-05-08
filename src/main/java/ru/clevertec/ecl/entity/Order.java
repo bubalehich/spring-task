@@ -31,6 +31,11 @@ public class Order extends BaseEntity {
 
     private String purchaseDate;
 
+    public Order(User user, GiftCertificate giftCertificate) {
+        this.user = user;
+        this.giftCertificate = giftCertificate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
