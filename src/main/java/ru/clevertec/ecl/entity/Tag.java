@@ -1,33 +1,32 @@
 package ru.clevertec.ecl.entity;
 
-import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import ru.clevertec.ecl.entity.base.NamedEntity;
 
-import java.util.Objects;
-
+@NoArgsConstructor
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class Tag {
+@Entity
+@Table(name = "tags")
+public class Tag extends NamedEntity {
 
-    private int id;
+    public Tag(String name) {
+        super(name);
+    }
 
-    @NotBlank(message = "Name can't be empty")
-    private String name;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Tag)) return false;
-        Tag tag = (Tag) o;
-        return id == tag.id &&
-                name.equals(tag.name);
+    public Tag(Integer id, String name) {
+        super(id, name);
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(id, name);
+    public String toString() {
+        return "Tag{" +
+                "id=" + getId() +
+                ", name='" + getName() + '\'' +
+                "}";
     }
 }
