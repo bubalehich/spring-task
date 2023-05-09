@@ -7,7 +7,6 @@ import ru.clevertec.ecl.dao.impl.GiftCertificateDAO;
 import ru.clevertec.ecl.entity.GiftCertificate;
 import ru.clevertec.ecl.exception.ItemNotFoundException;
 import ru.clevertec.ecl.exception.RequestParamsNotValidException;
-import ru.clevertec.ecl.exception.ServiceException;
 import ru.clevertec.ecl.pagination.Pagination;
 import ru.clevertec.ecl.service.ServiceInterface;
 import ru.clevertec.ecl.util.Criteria;
@@ -55,7 +54,7 @@ public class GiftCertificateService implements ServiceInterface<GiftCertificate>
         if (giftCertificate.getName() == null || giftCertificate.getName().trim().isEmpty()
                 || giftCertificate.getDescription() == null || giftCertificate.getDescription().trim().isEmpty()
                 || giftCertificate.getDuration() == 0 || giftCertificate.getPrice() == 0) {
-            throw new ServiceException("Name, description, duration, price required");
+            throw new RequestParamsNotValidException("Name, description, duration, price required");
         }
         giftCertificate.setCreateDate(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
         giftCertificate.setLastUpdateDate(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
@@ -84,7 +83,7 @@ public class GiftCertificateService implements ServiceInterface<GiftCertificate>
             giftCertificate.setDuration(oldCertificate.getDuration());
         }
         if (giftCertificate.getDuration() != oldCertificate.getDuration() && costOrDurationChanged) {
-            throw new ServiceException("Price and duration can't be changed at the same time.");
+            throw new RequestParamsNotValidException("Price and duration can't be changed at the same time.");
         }
         if (giftCertificate.getName() == null || giftCertificate.getName().trim().isEmpty()) {
             giftCertificate.setName(oldCertificate.getName());

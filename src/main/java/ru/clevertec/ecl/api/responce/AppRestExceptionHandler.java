@@ -13,6 +13,7 @@ public class AppRestExceptionHandler {
 
     private static final int ITEM_NOT_FOUND = 100404;
     private static final int REQUEST_PARAMS_NOT_VALID = 100400;
+    private static final int NOT_SUPPORTED = 100405;
     private static final int SERVER_ERR = 100500;
     private static final int COMMON_ERR = 666;
 
@@ -43,4 +44,12 @@ public class AppRestExceptionHandler {
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handleUnsupportedOperationException(UnsupportedOperationException e) {
+        ErrorResponse errorResponse = new ErrorResponse(NOT_SUPPORTED, e.getMessage());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.METHOD_NOT_ALLOWED);
+    }
+
 }

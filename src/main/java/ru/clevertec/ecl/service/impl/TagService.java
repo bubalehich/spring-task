@@ -7,7 +7,6 @@ import ru.clevertec.ecl.dao.impl.GenericDAO;
 import ru.clevertec.ecl.entity.Tag;
 import ru.clevertec.ecl.exception.ItemNotFoundException;
 import ru.clevertec.ecl.exception.RequestParamsNotValidException;
-import ru.clevertec.ecl.exception.ServiceException;
 import ru.clevertec.ecl.pagination.Pagination;
 import ru.clevertec.ecl.service.ServiceInterface;
 import ru.clevertec.ecl.util.Criteria;
@@ -50,7 +49,7 @@ public class TagService implements ServiceInterface<Tag> {
             throw new RequestParamsNotValidException("Empty body");
         }
         if (tag.getName() == null || tag.getName().trim().isEmpty()) {
-            throw new ServiceException("Name required");
+            throw new RequestParamsNotValidException("Name required");
         }
 
         return tagDAO.save(tag).orElse(null);
@@ -71,7 +70,7 @@ public class TagService implements ServiceInterface<Tag> {
         try {
             tagDAO.delete(tag);
         } catch (Exception ex) {
-            throw new ServiceException("Tag can't be deleted. Already used in GiftCertificate");
+            throw new RequestParamsNotValidException("Tag can't be deleted. Already used in GiftCertificate");
         }
 
         return true;
