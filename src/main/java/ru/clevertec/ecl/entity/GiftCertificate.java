@@ -19,10 +19,12 @@ import java.util.Set;
 @Table(name = "gift_certificates")
 public class GiftCertificate extends NamedEntity {
 
+    @Column(length = 500)
     private String description;
 
     private double price;
 
+    @Column(updatable = false)
     private String createDate;
 
     private String lastUpdateDate;

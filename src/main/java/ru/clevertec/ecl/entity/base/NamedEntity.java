@@ -1,5 +1,6 @@
 package ru.clevertec.ecl.entity.base;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import lombok.*;
 
@@ -12,6 +13,7 @@ import java.util.Objects;
 @Setter
 public abstract class NamedEntity extends BaseEntity {
 
+    @Column(unique = true)
     private String name;
 
     protected NamedEntity(Integer id, String name) {

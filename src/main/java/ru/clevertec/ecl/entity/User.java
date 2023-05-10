@@ -21,6 +21,13 @@ import java.util.Set;
 @Table(name = "users")
 public class User extends Person {
 
+    @JsonManagedReference
+    @OneToMany(
+            mappedBy = "user",
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
+    private Set<Order> orders = new HashSet<>();
+
     public User(String firstName, String lastName) {
         super(firstName, lastName);
     }
@@ -29,13 +36,6 @@ public class User extends Person {
         super(id, firstName, lastName);
         this.orders = orders;
     }
-
-    @JsonManagedReference
-    @OneToMany(
-            mappedBy = "user",
-            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
-    )
-    private Set<Order> orders = new HashSet<>();
 
     public void addOrder(Order order) {
         this.orders.add(order);
