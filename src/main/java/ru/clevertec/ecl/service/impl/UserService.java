@@ -33,6 +33,7 @@ public class UserService implements ServiceInterface<User> {
         this.certificateDAO.setClazz(GiftCertificate.class);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public User getById(int id) {
         return userDAO.getById(id).orElseThrow(()
@@ -40,11 +41,13 @@ public class UserService implements ServiceInterface<User> {
         );
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Pagination<User> getAll(int page, int size, String sort, String sortMode) {
         return userDAO.getAll(new Pagination<>(size, page, 0), new Pair<>(sort, sortMode));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Pagination<User> getBy(List<Criteria> criteria, int page, int size, String sort, String sortMode) {
         throw new UnsupportedOperationException("Search operation is not allowed for user");

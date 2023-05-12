@@ -28,6 +28,7 @@ public class GiftCertificateService implements ServiceInterface<GiftCertificate>
         this.certificateDAO.setClazz(GiftCertificate.class);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public GiftCertificate getById(int id) {
         return certificateDAO.getById(id).orElseThrow(()
@@ -35,11 +36,13 @@ public class GiftCertificateService implements ServiceInterface<GiftCertificate>
         );
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Pagination<GiftCertificate> getAll(int page, int size, String sort, String sortMode) {
         return certificateDAO.getAll(new Pagination<>(size, page, 0), new Pair<>(sort, sortMode));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Pagination<GiftCertificate> getBy(List<Criteria> criteria, int page, int size, String sort, String sortMode) {
         return certificateDAO.getBy(criteria, page, size, sort, sortMode);

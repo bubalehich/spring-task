@@ -2,13 +2,13 @@ package ru.clevertec.ecl.api.responce;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.clevertec.ecl.exception.ItemNotFoundException;
 import ru.clevertec.ecl.exception.RequestParamsNotValidException;
 import ru.clevertec.ecl.exception.ServiceException;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class AppRestExceptionHandler {
 
     private static final int ITEM_NOT_FOUND = 100404;

@@ -26,6 +26,7 @@ public class TagService implements ServiceInterface<Tag> {
         this.tagDAO.setClazz(Tag.class);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Tag getById(int id) {
         return tagDAO.getById(id).orElseThrow(()
@@ -33,11 +34,13 @@ public class TagService implements ServiceInterface<Tag> {
         );
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Pagination<Tag> getAll(int page, int size, String sort, String sortMode) {
         return tagDAO.getAll(new Pagination<>(size, page, 0), new Pair<>(sort, sortMode));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Pagination<Tag> getBy(List<Criteria> criteria, int page, int size, String sort, String sortMode) {
         throw new UnsupportedOperationException("Search operation is not allowed for tag");
