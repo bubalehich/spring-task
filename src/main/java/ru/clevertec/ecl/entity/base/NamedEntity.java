@@ -17,7 +17,6 @@ import java.util.Objects;
 @Setter
 public abstract class NamedEntity extends BaseEntity {
 
-    @Column(unique = true)
     private String name;
 
     protected NamedEntity(Integer id, String name) {

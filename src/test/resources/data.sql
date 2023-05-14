@@ -1,11 +1,11 @@
-insert into tag(name)
+insert into tags(name)
 values ('FirstTag'),
        ('SecondTag'),
        ('ThirdTag'),
        ('FourthTag'),
        ('FifthTag');
 
-insert into gift_certificate(name, description, price, create_date, last_update_date, duration)
+insert into gift_certificates(name, description, price, create_date, last_update_date, duration)
 VALUES ('Cerf1', 'desc1', 13.00, '2020-11-09 03:12:24', '2020-11-10 04:04:24', 1),
        ('Cerf2', 'desc2', 15.00, '2020-11-10 04:17:20', now(), 35),
        ('Cerf3', 'desc3', 4.00, '2020-11-10 03:10:12', '2020-11-10 06:04:56', 2),
@@ -16,3 +16,8 @@ VALUES (1, 1),
        (1, 2),
        (2, 1),
        (2, 2);
+
+INSERT INTO users (first_name, last_name)
+VALUES ('Kek', 'Lol'),
+       ('Drink', 'Beer'),
+       ('John', 'Doe');
