@@ -1,0 +1,161 @@
+package ru.clevertec.ecl.api.controller;
+
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.hateoas.server.RepresentationModelAssembler;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import ru.clevertec.ecl.entity.base.BaseEntity;
+import ru.clevertec.ecl.exception.ItemNotFoundException;
+import ru.clevertec.ecl.pagination.Pagination;
+import ru.clevertec.ecl.pagination.RestPagination;
+import ru.clevertec.ecl.service.ServiceInterface;
+import ru.clevertec.ecl.util.Criteria;
+import ru.clevertec.ecl.util.Operator;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
+public abstract class AbstractRestController<T extends BaseEntity> {
+
+    public static final String DEFAULT_SIZE = "20";
+    public static final String DEFAULT_PAGE = "1";
+    public static final String DEFAULT_SORT = "id";
+    public static final String DEFAULT_SORT_MODE = "asc";
+    public static final String VALUE_OPERATOR_SPLITTER = ":";
+    public static final Operator DEFAULT_OPERATOR = Operator.EQUAL;
+
+    protected final ServiceInterface<T> service;
+    protected final RepresentationModelAssembler<T, EntityModel<T>> assembler;
+    protected Class<? extends RestHateoasController<T>> controllerClass;
+
+    protected AbstractRestController(ServiceInterface<T> service, RepresentationModelAssembler<T, EntityModel<T>> assembler) {
+        this.service = service;
+        this.assembler = assembler;
+    }
+
+    @GetMapping("/{id}")
+    public EntityModel<T> one(@PathVariable int id) {
+        return assembler.toModel(service.getById(id));
+    }
+
+    @GetMapping
+    public EntityModel<RestPagination<T>> all(@RequestParam(name = "page", required = false, defaultValue = DEFAULT_PAGE) int page,
+                                              @RequestParam(name = "size", required = false, defaultValue = DEFAULT_SIZE) int size,
+                                              @RequestParam(name = "sort", required = false, defaultValue = DEFAULT_SORT) String sort,
+                                              @RequestParam(name = "sort_mode", required = false, defaultValue = DEFAULT_SORT_MODE) String sortMode) {
+        Pagination<T> pagination = service.getAll(page, size, sort, sortMode);
+        EntityModel<RestPagination<T>> model = EntityModel.of(new RestPagination<>(
+                assembler.toCollectionModel(pagination.getContent()),
+                pagination.getSize(),
+                pagination.getCurrentPage(),
+                pagination.getOverallPages()
+        ));
+
+        return model.add(linkTo(methodOn(controllerClass)
+                        .all(page, size, sort, sortMode))
+                        .withSelfRel())
+                .addIf(page > 1, (() -> linkTo(methodOn(controllerClass)
+                        .all(1, size, sort, sortMode))
+                        .withRel("first page")))
+                .addIf(page > 1, (() -> linkTo(methodOn(controllerClass)
+                        .all(page - 1, size, sort, sortMode))
+                        .withRel("previous page")))
+                .addIf(page < Objects.requireNonNull(model.getContent()).overallPages(), (() -> linkTo(methodOn(controllerClass)
+                        .all(page + 1, size, sort, sortMode))
+                        .withRel("next page")))
+                .addIf(page < model.getContent().overallPages(), (() -> linkTo(methodOn(controllerClass)
+                        .all((int) model.getContent().overallPages(), size, sort, sortMode))
+                        .withRel("last page")));
+    }
+
+    @GetMapping("/search")
+    public EntityModel<RestPagination<T>> getBy(@RequestParam Map<String, String> params,
+                                                @RequestParam(name = "page", required = false, defaultValue = DEFAULT_PAGE) int page,
+                                                @RequestParam(name = "size", required = false, defaultValue = DEFAULT_SIZE) int size,
+                                                @RequestParam(name = "sort", required = false, defaultValue = DEFAULT_SORT) String sort,
+                                                @RequestParam(name = "sort_mode", required = false, defaultValue = DEFAULT_SORT_MODE) String sortMode) {
+        params.remove("page");
+        params.remove("size");
+        params.remove("sort");
+        params.remove("sort_mode");
+
+        List<Criteria> criteria = mapCriteria(params);
+        Pagination<T> pagination = service.getBy(criteria, page, size, sort, sortMode);
+        EntityModel<RestPagination<T>> model = EntityModel.of(new RestPagination<>(
+                assembler.toCollectionModel(pagination.getContent()),
+                pagination.getSize(),
+                pagination.getCurrentPage(),
+                pagination.getOverallPages()
+        ));
+
+        return model.add(linkTo(methodOn(controllerClass)
+                        .getBy(params, page, size, sort, sortMode))
+                        .withSelfRel())
+                .addIf(page > 1, (() -> linkTo(methodOn(controllerClass)
+                        .getBy(params, 1, size, sort, sortMode))
+                        .withRel("first page")))
+                .addIf(page > 1, (() -> linkTo(methodOn(controllerClass)
+                        .getBy(params, page - 1, size, sort, sortMode))
+                        .withRel("previous page")))
+                .addIf(page < Objects.requireNonNull(model.getContent()).overallPages(), (() -> linkTo(methodOn(controllerClass)
+                        .getBy(params, page + 1, size, sort, sortMode))
+                        .withRel("next page")))
+                .addIf(page < model.getContent().overallPages(), (() -> linkTo(methodOn(controllerClass)
+                        .getBy(params, (int) model.getContent().overallPages(), size, sort, sortMode))
+                        .withRel("last page")));
+    }
+
+    @PostMapping
+    public ResponseEntity<EntityModel<T>> add(@RequestBody T t) {
+        EntityModel<T> em = assembler.toModel(service.create(t));
+
+        return ResponseEntity
+                .created(em.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(em);
+    }
+
+    @PutMapping
+    public ResponseEntity<EntityModel<T>> update(@RequestBody T t) {
+        EntityModel<T> em = assembler.toModel(service.update(t));
+
+        return ResponseEntity
+                .created(em.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(em);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<EntityModel<T>> delete(@PathVariable int id) {
+        service.delete(id);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    protected void setControllerClass(Class<? extends RestHateoasController<T>> controllerClass) {
+        this.controllerClass = controllerClass;
+    }
+
+    private List<Criteria> mapCriteria(Map<String, String> params) {
+        List<Criteria> criteria = new ArrayList<>();
+
+        params.forEach((k, v) -> {
+            String[] valueAndOperator = v.split(VALUE_OPERATOR_SPLITTER);
+            criteria.add(new Criteria(k.toLowerCase(), valueAndOperator[0].toLowerCase(), valueAndOperator.length == 2
+                    ? Operator.getBySortForm(valueAndOperator[1]).orElseThrow(() -> new ItemNotFoundException("Given operator is not supported"))
+                    : DEFAULT_OPERATOR));
+        });
+
+        return criteria;
+    }
+}
