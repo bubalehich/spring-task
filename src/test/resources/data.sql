@@ -21,3 +21,8 @@ INSERT INTO users (first_name, last_name)
 VALUES ('Kek', 'Lol'),
        ('Drink', 'Beer'),
        ('John', 'Doe');
+
+insert into orders(id, user_id, gift_certificate_id, price)
+values (1, 1, 1, 4.0),
+       (2, 1, 3, 5.45),
+       (3, 2, 2, 5.45);

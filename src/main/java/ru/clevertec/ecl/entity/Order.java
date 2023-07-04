@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import ru.clevertec.ecl.entity.base.BaseEntity;
 
 import java.util.Objects;
@@ -20,6 +21,7 @@ import java.util.Objects;
 @Setter
 @Entity
 @Table(name = "orders")
+@SuperBuilder
 public class Order extends BaseEntity {
 
     @JsonBackReference

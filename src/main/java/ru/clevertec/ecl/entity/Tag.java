@@ -5,6 +5,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import ru.clevertec.ecl.entity.base.NamedEntity;
 
 @NoArgsConstructor
@@ -12,6 +13,7 @@ import ru.clevertec.ecl.entity.base.NamedEntity;
 @Setter
 @Entity
 @Table(name = "tags")
+@SuperBuilder
 public class Tag extends NamedEntity {
 
     public Tag(String name) {

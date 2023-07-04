@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Objects;
 
@@ -15,9 +16,10 @@ import java.util.Objects;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
+@SuperBuilder
 public abstract class NamedEntity extends BaseEntity {
 
-    private String name;
+    protected String name;
 
     protected NamedEntity(Integer id, String name) {
         super(id);

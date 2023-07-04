@@ -43,9 +43,9 @@ public class DBLoader implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        List<Tag> tags = loadTags();
-        List<GiftCertificate> gcs = loadGCs(tags);
-        List<User> users = loadUsers(gcs);
+//        List<Tag> tags = loadTags();
+//        List<GiftCertificate> gcs = loadGCs(tags);
+//        List<User> users = loadUsers(gcs);
     }
 
     public List<Tag> loadTags() {
