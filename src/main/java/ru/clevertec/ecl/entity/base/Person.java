@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Objects;
 
@@ -14,6 +15,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @MappedSuperclass
+@SuperBuilder
 public abstract class Person extends BaseEntity {
 
     private String firstName;

@@ -9,9 +9,11 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import ru.clevertec.ecl.entity.base.NamedEntity;
 
 import java.util.HashSet;
@@ -23,6 +25,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@SuperBuilder
 @Table(name = "gift_certificates")
 public class GiftCertificate extends NamedEntity {
 
@@ -43,6 +46,7 @@ public class GiftCertificate extends NamedEntity {
     @JoinTable(name = "gift_certificate_tag",
             joinColumns = @JoinColumn(name = "gift_certificate_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    @Builder.Default
     private Set<Tag> tags = new HashSet<>();
 
     public GiftCertificate(String name, String description, double price, int duration) {
